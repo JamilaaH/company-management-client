@@ -11,13 +11,43 @@ const routes = [
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+    path: '/register',
+    name: 'Register',
+    component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue'),
+  },
+  {
+    path:'/back',
+    name:'Back', 
+    component: () => import(/* webpackChunkName: "back" */ '../views/Back.vue'),
+    meta: { requiresAuth: true },
+    redirect: {
+      name:"Dashboard",
+    },
+
+  },
+  {
+    path:'/dashboard',
+    name:'Dashboard', 
+    component: () => import(/* webpackChunkName: "dashboard" */ '../views/Dashboard.vue'),
+    meta: { requiresAuth: true, userComplete: true }
+  },
+  {
+    path:'/dashboard/entreprise',
+    name:'Entreprise', 
+    component: () => import(/* webpackChunkName: "monEntreprise" */ '../views/MonEntreprise.vue'),
+    meta: { requiresAuth: true }
+  },
+  {
+    path:'/login',
+    name:'Login', 
+    component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+  },
+  {
+    path:'/stepper',
+    name:'Stepper', 
+    component: () => import(/* webpackChunkName: "stepper" */ '../views/Stepper.vue')
+  },
+
 ]
 
 const router = new VueRouter({
