@@ -135,6 +135,7 @@ export default new Vuex.Store({
     } )
     .catch(error => console.log(error))
   }, 
+  //enregistrer l'entreprise avant d'aller au dashboard
   registerEntreprise: function ({state}, value) {
     axios.post('http://127.0.0.1:8000/api/storeentreprise', value, {
       headers: {
@@ -143,6 +144,30 @@ export default new Vuex.Store({
         console.log(response);
       })
       .catch(error=>console.log(error))
+  },
+  //récuperer les taches de l'entreprise
+  getTask: function ( {commit, state}) {
+    axios.get('http://127.0.0.1:8000/api/task', {
+      headers: {
+      Authorization: "Bearer " + state.token
+      }
+      }).then((response) => {
+          commit('setTask', response.data.taches);
+          console.log(state.task)
+      }) 
+      .catch(error => console.log(error))
+  },
+  updateTask: function({state, commit}, value) {
+    axios.put('http://127.0.0.1:8000/api/task/'+value, {}, {
+      headers: {
+      Authorization: "Bearer " + state.token
+      }
+      }).then((response) => {
+          commit('setTask', response.data.taches);
+          console.log('mis a jour');
+      }) 
+      .catch(error => console.log(error))
+
   }
   },
   modules: {

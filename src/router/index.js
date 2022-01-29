@@ -35,7 +35,14 @@ const routes = [
     path:'/dashboard/entreprise',
     name:'Entreprise', 
     component: () => import(/* webpackChunkName: "monEntreprise" */ '../views/MonEntreprise.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, userComplete: true }
+  },
+
+  {
+    path:'/dashboard/taches',
+    name:'Taches', 
+    component: () => import(/* webpackChunkName: "taches" */ '../views/Task.vue'),
+    meta: { requiresAuth: true, userComplete: true }
   },
   {
     path:'/login',

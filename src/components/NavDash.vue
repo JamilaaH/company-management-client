@@ -21,7 +21,7 @@
         </v-list-item-content>
       </v-list-item>
       
-      <v-list-item to=''>
+      <v-list-item :to='{name:"Taches"}'>
         <v-list-item-icon>
           <v-icon class="mdi mdi-calendar-check" ></v-icon>
         </v-list-item-icon>
