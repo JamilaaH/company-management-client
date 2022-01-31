@@ -45,6 +45,12 @@ const routes = [
     meta: { requiresAuth: true, userComplete: true }
   },
   {
+    path:'/dashboard/messages',
+    name:'Messages', 
+    component: () => import(/* webpackChunkName: "messages" */ '../views/Messagerie.vue'),
+    meta: { requiresAuth: true, userComplete: true }
+  },
+  {
     path:'/login',
     name:'Login', 
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')

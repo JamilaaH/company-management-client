@@ -21,11 +21,11 @@
                     <td>{{ tache.text }}</td>
                     <td>
                         <v-btn-toggle color="deep-purple accent-3" v-model="tache.etat">
-                            <v-btn @click="envoie(tache.id)">
+                            <v-btn @click="taskDone(tache.id)">
                                 Non fait
                             </v-btn>
                     
-                            <v-btn @click="envoie(tache.id)">
+                            <v-btn @click="taskDone(tache.id)">
                                 Fait
                             </v-btn>
                     
@@ -49,7 +49,7 @@
             this.$store.dispatch('getTask')
         },
         methods: {
-            envoie(index) {
+            taskDone(index) {
                 this.$store.dispatch('updateTask', index)
                 console.log(index);
             }

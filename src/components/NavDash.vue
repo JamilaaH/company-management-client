@@ -30,7 +30,7 @@
           <v-list-item-title >Mes tâches</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item href="/dashboard/commande">
+      <v-list-item :to='{name:"Messages"}'>
         <v-list-item-icon>
           <v-icon class="mdi mdi-forum" ></v-icon>
         </v-list-item-icon>

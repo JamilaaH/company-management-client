@@ -11,7 +11,8 @@ export default new Vuex.Store({
     token:null,
     task:null,
     entreprise : null,
-    tva:null
+    tva:null,
+    messages:null
   },
   mutations: {
     setUser(state, value) {
@@ -33,6 +34,9 @@ export default new Vuex.Store({
       state.user = null,
       state.token= null
     },
+    setMessage(state, value) {
+      state.messages = value
+    }
   },
   actions: {
 
@@ -137,7 +141,7 @@ export default new Vuex.Store({
   }, 
   //enregistrer l'entreprise avant d'aller au dashboard
   registerEntreprise: function ({state}, value) {
-    axios.post('http://127.0.0.1:8000/api/storeentreprise', value, {
+    axios.post('http://127.0.0.1:8000/api/entreprise/store', value, {
       headers: {
       Authorization: "Bearer " + state.token
       }}).then((response)=> {
@@ -165,6 +169,32 @@ export default new Vuex.Store({
       }).then((response) => {
           commit('setTask', response.data.taches);
           console.log('mis a jour');
+      }) 
+      .catch(error => console.log(error))
+  },
+  //récupérer les messages
+  getMessages: function({state, commit}) {
+    axios.get('http://127.0.0.1:8000/api/messages',  {
+      headers: {
+      Authorization: "Bearer " + state.token
+      }
+    }).then((response) => {
+      console.log('response');
+      commit('setMessage', response.data.messages)
+    })
+    .catch(error => console.log(error))
+    
+    
+  },
+  //envoie de message
+  sendMessage: function({state, dispatch}, value) {
+    axios.post('http://127.0.0.1:8000/api/messages/store', value, {
+      headers: {
+      Authorization: "Bearer " + state.token
+      }
+      }).then((response) => {
+          dispatch('getMessages');
+          console.log(response.data.message);
       }) 
       .catch(error => console.log(error))
 
