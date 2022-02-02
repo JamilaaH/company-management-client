@@ -80,6 +80,10 @@ export default {
     },
 
     mounted() {
+        window.Echo.channel("chat").listen("ChatEvent", (event)=>{
+            console.log(event)
+            this.$store.dispatch('getMessages');
+        });
         this.$store.dispatch('getMessages');
     }
 };

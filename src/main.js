@@ -4,6 +4,19 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import moment from 'moment'
+import Echo from "laravel-echo"
+
+window.Pusher = require('pusher-js');
+
+window.Echo = new Echo({
+  broadcaster: 'pusher',
+  key: 'local',
+  wsHost: '127.0.0.1',
+  wsPort: 6001,
+  wssPort: 6001,
+  forceTLS: false,
+  disableStats: true,
+});
 
 Vue.config.productionTip = false
 router.beforeEach((to, from, next) => {

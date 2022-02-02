@@ -15,6 +15,12 @@ import NavDash from './components/NavDash.vue';
 export default {
   components: { Nav, NavDash },
   name: 'App',
+  created() {
+  window.Echo.private('testchannel')
+      .listen('Test', (e) => {
+          console.log('test successful ' + e)
+  })
+  },
 
   data: () => ({
     //
@@ -29,7 +35,7 @@ export default {
     entreprise () {
       return this.$store.state.entreprise
     }
-
-  }
+  }, 
+  
 };
 </script>

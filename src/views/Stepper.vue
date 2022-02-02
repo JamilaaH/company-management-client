@@ -26,15 +26,17 @@
                             <v-stepper-content step="1">
                                 <v-card class="mb-12 pa-10"  >
                                     <v-form>
-                                        <v-text-field :rules ="tvaRules" prefix="0" type="number" label="Numéro de TVA" v-model="form.tva"></v-text-field>
-                                        <v-btn color="primary" @click="[e1 = 2 , cherche()]"> Continue </v-btn>
+                                        <v-text-field :rules ="tvaRules" prefix="0" type="number" label="Numéro de TVA" v-model="form.tva"></v-text-field> 
+                                        <small class="red--text" v-if="erreur">Numéro de tva non valide</small>
+                                        <br>
+                                        <v-btn color="primary" @click=" cherche()"> Continue </v-btn>
                                     </v-form>
                                 </v-card>
 
                             </v-stepper-content>
 
                             <v-stepper-content step="2">
-                                <v-card class="mb-12" >
+                                <v-card class="mb-12">
 
                                     <v-container v-if="entreprise != null || entreprise != undefined">
                                         <v-row>
@@ -90,7 +92,7 @@
                                                 </v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6">
-                                                <v-text-field label="Email de contact" v-model="form.email_contact"  >
+                                                <v-text-field label="Email de contact" :rules="emailRules" v-model="form.email_contact"  >
                                                 </v-text-field>
                                             </v-col>
                                         </v-row>
@@ -123,6 +125,7 @@ export default {
     data () {
         return {
             e1: 1,
+            erreur: false, 
             form: {
                 tva:null,
                 activite:null,
@@ -130,6 +133,11 @@ export default {
                 numero_contact:null,
                 email_contact:null
             },
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',                
+            ],
+
 
             tvaRules: [
                 v => !!v || 'TVA is required',
@@ -144,12 +152,21 @@ export default {
                 } else {
                 return this.$store.state.entreprise
             }
+        },
+        tva() {
+            return this.$store.state.step
         }
     },
     methods:{
         cherche() {
             console.log(this.form.tva);
             this.$store.dispatch('getTVAEntreprise', this.form.tva)
+            if (this.$store.state.step === true) {
+                this.e1 = 2 
+                console.log(this.e1);
+            } else if (this.$store.state.step === 'non valide') {
+                this.erreur = true
+            }
         },
         envoyer() {
                 let donnees = {

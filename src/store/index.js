@@ -12,7 +12,8 @@ export default new Vuex.Store({
     task:null,
     entreprise : null,
     tva:null,
-    messages:null
+    messages:null,
+    step: null
   },
   mutations: {
     setUser(state, value) {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     setMessage(state, value) {
       state.messages = value
+    },
+    setStep(state, value) {
+      state.step = value
     }
   },
   actions: {
@@ -128,7 +132,9 @@ export default new Vuex.Store({
     .then((response) => {
       if (response.data.valid == false) {
         console.log("pas d'entreprise")
-      } else {
+        commit('setStep', 'non valide')
+      } else if(response.data.valid == true) {
+        commit('setStep', true)
         commit('setTVA', response.data.vatNumber)
         commit('setEntreprise', response.data)
         console.log(response.data);
