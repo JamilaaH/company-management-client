@@ -34,6 +34,7 @@ router.beforeEach((to, from, next) => {
   else {
     return next();}
 })
+
 Vue.filter('formatDate', function(value) {
   if (value) {
     return moment(String(value)).format('DD/MM/YYYY HH:MM')
