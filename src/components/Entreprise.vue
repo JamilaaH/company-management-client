@@ -1,5 +1,5 @@
 <template>
-  <v-container-fluid class="mt-10">
+  <v-container fluid class="mt-10">
     <div class="d-flex justify-space-around">
       <h1>Mon entreprise</h1>
       <v-btn fab dark small color="deep-purple" @click="edit">
@@ -13,7 +13,7 @@
           permanent
           class="deep-purple accent-4 spacing-playground pa-6"
         >
-          <v-container-fluid>
+          <v-container>
             <v-row>
               <v-col cols="12" sm="4">
                 <v-text-field readonly v-model="entreprise.tva"> </v-text-field>
@@ -42,7 +42,7 @@
                 <v-text-field readonly :value="entreprise.pays"> </v-text-field>
               </v-col>
             </v-row>
-          </v-container-fluid>
+          </v-container>
         </v-card>
         <v-card
           dark
@@ -50,7 +50,7 @@
           class="deep-purple accent-4 spacing-playground pa-6 mt-4"
         >
           <v-card-title> Personne de contact </v-card-title>
-          <v-container-fluid>
+          <v-container>
             <v-row>
               <v-col cols="12" sm="6">
                 <v-text-field readonly :value="entreprise.nom_contact">
@@ -67,11 +67,11 @@
                 </v-text-field>
               </v-col>
             </v-row>
-          </v-container-fluid>
+          </v-container>
         </v-card>
       </v-col>
     </v-row>
-  </v-container-fluid>
+  </v-container>
 </template>
 
 <script>

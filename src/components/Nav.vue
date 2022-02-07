@@ -11,6 +11,7 @@
 
         <v-btn v-if ="token == null" href="/login" class="mr-3" >Se connecter</v-btn>  
         <v-btn v-if ="token !== null" to="/dashboard" class="mr-3" >Dashboard</v-btn>  
+        <v-btn v-if ="token !== null"  @click="logout" class="mr-3" >déconnecter</v-btn>  
 
       <v-divider inset vertical></v-divider>
 
@@ -35,6 +36,13 @@
             token() {
                 return this.$store.state.token 
             },
+        },
+        methods: {
+          logout() {
+            this.$store.dispatch('logout');
+            this.$router.push({name:"Home"});
+
+          }
         },
     }
 </script>

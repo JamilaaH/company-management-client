@@ -13,7 +13,8 @@ export default new Vuex.Store({
     entreprise : null,
     tva:null,
     messages:null,
-    step: null
+    step: null,
+    userEntreprise : null,
   },
   mutations: {
     setUser(state, value) {
@@ -34,12 +35,20 @@ export default new Vuex.Store({
     clearToken(state) {
       state.user = null,
       state.token= null
+      state.userEntreprise = null
+
     },
     setMessage(state, value) {
       state.messages = value
     },
     setStep(state, value) {
       state.step = value
+    }, 
+    trueEntreprise (state) {
+      state.userEntreprise = true
+    },
+    falseEntreprise (state) {
+      state.userEntreprise = false
     }
   },
   actions: {
@@ -103,23 +112,31 @@ export default new Vuex.Store({
     .catch(error => console.log(error))
   },
   
+  //récuperer l'entreprise après connexion et voir si elle existe ou non
   getEntreprise: function ( {commit, state}) {
     axios.get('http://127.0.0.1:8000/api/entreprise', {
       headers: {
       Authorization: "Bearer " + state.token
       }
       }).then((response) => {
+        if (response.data.valid == false) {
+          commit('falseEntreprise')
+        } else if (response.data.valid == true){
+          commit('trueEntreprise')
           commit('setEntreprise', response.data.data);
-          console.log(state.user)
+          console.log(state.user)         
+        }
       }) 
       .catch(error => console.log(error))
   },
+  //modifier mon entreprise (hors données TVA)
   editEntreprise: function ( {commit, state}, value) {
     axios.put('http://127.0.0.1:8000/api/entreprise/update', value, {
       headers: {
       Authorization: "Bearer " + state.token
       }
       }).then((response) => {
+
           commit('setEntreprise', response.data.data);
           // console.log(state.user)
       }) 
@@ -132,25 +149,24 @@ export default new Vuex.Store({
     .then((response) => {
       if (response.data.valid == false) {
         console.log("pas d'entreprise")
-        commit('setStep', 'non valide')
+        commit('setStep', 'non valide') // le stepper ne passe pas à l'étape suivante
       } else if(response.data.valid == true) {
-        commit('setStep', true)
-        commit('setTVA', response.data.vatNumber)
-        commit('setEntreprise', response.data)
+        commit('setStep', "valide") //etape valide
+        commit('trueEntreprise') // entreprise existe via le TVA
+        commit('setEntreprise', response.data) // on récupére les données
         console.log(response.data);
-        // console.log(response.data.vatNumber)
-        // console.log(response.data)
         
       }
     } )
     .catch(error => console.log(error))
   }, 
   //enregistrer l'entreprise avant d'aller au dashboard
-  registerEntreprise: function ({state}, value) {
+  registerEntreprise: function ({commit, state}, value) {
     axios.post('http://127.0.0.1:8000/api/entreprise/store', value, {
       headers: {
       Authorization: "Bearer " + state.token
       }}).then((response)=> {
+        commit('trueEntreprise'); // envoie dans la db
         console.log(response);
       })
       .catch(error=>console.log(error))
@@ -167,6 +183,7 @@ export default new Vuex.Store({
       }) 
       .catch(error => console.log(error))
   },
+  // Valider la tâche faite 
   updateTask: function({state, commit}, value) {
     axios.put('http://127.0.0.1:8000/api/task/'+value, {}, {
       headers: {
@@ -203,8 +220,8 @@ export default new Vuex.Store({
           console.log(response.data.message);
       }) 
       .catch(error => console.log(error))
-
-  }
+  },
+  
   },
   modules: {
   },

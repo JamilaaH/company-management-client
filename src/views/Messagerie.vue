@@ -1,7 +1,7 @@
 <template>
     <div>
-        <v-container style="max-width:80%" class="box">
         <h2 class="mb-3">Messagerie</h2>
+        <v-container style="max-width:80% ; position:relative" class="box">
             <v-row class="space-around d-flex flex-column" >
                 <v-card v-for="message in messages" :key="message.time" flat >              
                     <v-list-item
@@ -18,9 +18,7 @@
                             <v-card-text class="white--text pa-2 d-flex flex-column">
                             <span class="text-caption">{{ message.author.nom }} </span>                                                 
                             <span class="align-self-start text-subtitle-1">{{ message.message }}</span>
-                            <span class="text-caption font-italic align-self-end">{{
-                                message.created_at | formatDate
-                            }}</span> 
+                            <span class="text-caption font-italic align-self-end">{{message.created_at | formatDate}} </span> 
                             </v-card-text>
                         </v-card>                   
                         </v-list-item-content>
@@ -31,9 +29,7 @@
                             <v-card-text class="white--text pa-2 d-flex flex-column">
                             <span class="text-caption flex-end">{{ message.entreprise.nom_contact }} </span>                                                                                                                            
                             <span class="text-subtitle-1 chat-message">{{ message.message }}</span>
-                            <span class="text-caption font-italic align-self-start">{{
-                                message.created_at | formatDate
-                            }}</span> 
+                            <span class="text-caption font-italic align-self-start">{{message.created_at | formatDate}} </span> 
                             </v-card-text>
                         </v-card>
                         </v-list-item-content>
@@ -45,9 +41,9 @@
                     </v-list-item> 
                 </v-card>
             </v-row>
-            <v-row class="justify-end"> 
-                <v-card class="d-flex justify-space-around" flat>
-                    <v-text-field v-model="texte" @keypress.enter="envoi" style="width:80vw" placeholder="écrire votre message" name="texte">
+            <v-row  > 
+                <v-card class="d-flex justify-space-around" style="position:fixed; bottom:10vh; " flat>
+                    <v-text-field v-model="texte" @keypress.enter="envoi" style="width:80%" placeholder="écrire votre message" name="texte">
                     </v-text-field>
                     <v-btn @click="envoi">V</v-btn>
                 </v-card>
@@ -83,6 +79,7 @@ export default {
         window.Echo.channel("chat").listen("ChatEvent", (event)=>{
             console.log(event)
             this.$store.dispatch('getMessages');
+            console.log(typeof event.message.created_at);
         });
         this.$store.dispatch('getMessages');
     }
@@ -94,4 +91,6 @@ export default {
     border: solid #ECEFF1 1px
     border-radius: 15px
     padding: 2%
+    height: 80vh
+    overflow: auto
 </style>

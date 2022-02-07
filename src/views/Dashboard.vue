@@ -33,8 +33,15 @@
 </template>
 
 <script>
+import axios from 'axios'
     export default {
         name:"Dashboard",
+        data() {
+            return {
+                url:'http://127.0.0.1:8000/',
+                notifications: null
+            }
+        },
         computed: {
             user() {
             return this.$store.state.user
@@ -43,12 +50,20 @@
             return this.$store.state.token
             }
         },
-        data() {
-            return {
-            url:'http://127.0.0.1:8000/',
+        mounted() {
+            axios.get('http://127.0.0.1:8000/api/dashboard', {
+                headers: {
+                Authorization: "Bearer " + this.token
             }
-        },
-
+        }).then((response)=> {
+            if (response.data.valid == true) {
+                this.notifications = response.data.data
+            } else {
+                this.notifications = null
+            }
+        })
+        
+        }
     }
 </script>
 

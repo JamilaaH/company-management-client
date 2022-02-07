@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
 
 router.beforeEach((to, from, next) => {
   const userCompleted = to.matched.some(record => record.meta.userComplete);
-  if(userCompleted && store.state.entreprise.length == 0 ) {   
+  if(userCompleted && store.state.userEntreprise == false ) {   
     return next('/stepper');}
   else {
     return next();}
@@ -37,9 +37,10 @@ router.beforeEach((to, from, next) => {
 
 Vue.filter('formatDate', function(value) {
   if (value) {
-    return moment(String(value)).format('DD/MM/YYYY HH:MM')
+    return moment(String(value)).format('DD/MM/YYYY HH:mm')
   }
 });
+
 new Vue({
   router,
   store,

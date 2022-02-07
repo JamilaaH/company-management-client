@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container-fluid class="mt-5">
+        <v-container fluid class="mt-5">
             <v-row>
                 <v-col cols="12" sm="8" offset-sm="2">
                     <h2>Ajouter votre entreprise</h2>
@@ -38,7 +38,7 @@
                             <v-stepper-content step="2">
                                 <v-card class="mb-12">
 
-                                    <v-container v-if="entreprise != null || entreprise != undefined">
+                                    <v-container v-if="entreprise">
                                         <v-row>
                                             <v-col cols="12" sm="12">
                                                 <v-text-field v-model="form.activite" label="Activité" >
@@ -116,7 +116,7 @@
 
                 </v-col>
             </v-row>
-        </v-container-fluid>
+        </v-container>
     </div>
 </template>
 
@@ -147,21 +147,21 @@ export default {
     },
     computed: {
         entreprise () {
-            if (this.$store.state.entreprise.length == 0) {
-                return this.tva
-                } else {
-                return this.$store.state.entreprise
-            }
+                if (this.$store.state.userEntreprise === false) {
+                    return false
+                } else  {
+                    return this.$store.state.entreprise
+
+                }
+            
         },
-        tva() {
-            return this.$store.state.step
-        }
+
     },
     methods:{
         cherche() {
             console.log(this.form.tva);
             this.$store.dispatch('getTVAEntreprise', this.form.tva)
-            if (this.$store.state.step === true) {
+            if (this.$store.state.step === 'valide') {
                 this.e1 = 2 
                 console.log(this.e1);
             } else if (this.$store.state.step === 'non valide') {
@@ -169,18 +169,18 @@ export default {
             }
         },
         envoyer() {
-                let donnees = {
-                tva:this.form.tva,
-                activite:this.form.activite,
-                nom:this.entreprise.name,
-                adresse:this.entreprise.address.street,
-                numero:this.entreprise.address.number,
-                ville:this.entreprise.address.city, 
-                pays:this.entreprise.address.country, 
-                code_postal:this.entreprise.address.zip_code,
-                nom_contact:this.form.nom_contact,
-                numero_contact:this.form.numero_contact,
-                email_contact:this.form.email_contact
+            let donnees = {
+            tva:this.form.tva,
+            activite:this.form.activite,
+            nom:this.entreprise.name,
+            adresse:this.entreprise.address.street,
+            numero:this.entreprise.address.number,
+            ville:this.entreprise.address.city, 
+            pays:this.entreprise.address.country, 
+            code_postal:this.entreprise.address.zip_code,
+            nom_contact:this.form.nom_contact,
+            numero_contact:this.form.numero_contact,
+            email_contact:this.form.email_contact
             };
 
             this.$store.dispatch('registerEntreprise', donnees)
